@@ -42,10 +42,10 @@ export async function fetchDataSource<T extends {}>(
       typeof err === 'object' &&
       err !== null &&
       'response' in err &&
-      (err as { response: any }).response &&
-      'status' in err['response']
+      (err as any).response &&
+      'status' in (err as any).response
     )
-      throw new HTTPError(err['response'].status, 'Error fetching iscool servers');
+      throw new HTTPError((err as any).response.status, 'Error fetching iscool servers');
     throw new Error('Unknown error');
   }
 }

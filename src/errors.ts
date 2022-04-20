@@ -7,7 +7,7 @@ export class HTTPError extends Error {
   }
 
   static isHTTPError(err: Error): err is HTTPError {
-    return err.name == HTTPError.errorName && 'code' in err;
+    return err.name === HTTPError.errorName && 'code' in err;
   }
 
   readonly code;

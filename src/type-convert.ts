@@ -35,7 +35,13 @@ export class ISCOOL {
    * @returns a string representing thr (actual) room / Zoom / Async description of the lesson's location
    */
   static toClassroom(Te: string, Room: string): string {
-    return Te == '' ? Room : Te == ONLINE ? ONLINE : Te == ONLINE_ASYNCRONOUS ? ONLINE_ASYNCRONOUS : CLASS_UNAVAILABLE;
+    return Te === ''
+      ? Room
+      : Te === ONLINE
+      ? ONLINE
+      : Te === ONLINE_ASYNCRONOUS
+      ? ONLINE_ASYNCRONOUS
+      : CLASS_UNAVAILABLE;
   }
 
   /**

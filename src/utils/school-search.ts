@@ -14,6 +14,6 @@ export async function fetchSchoolsWithQuery(query: string | number) {
   )}`;
   const res = await axios.get<ISchoolSearchRepsonse>(url);
 
-  if (res.status != 200) throw new Error('Error fetching iscool server for school search');
+  if (res.status !== 200) throw new Error('Error fetching iscool server for school search');
   return res.data;
 }
