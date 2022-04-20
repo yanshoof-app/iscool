@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { HTTPError } from './errors';
+import { HTTPError } from '../errors';
 
 export type FetchFor = 'schedule' | 'changes' | 'classes';
 
@@ -11,6 +11,8 @@ export type FetchFor = 'schedule' | 'changes' | 'classes';
  * @returns the url made of those
  */
 export function buildFetchUrl(fetchFor: FetchFor, schoolId: string | number, classId: string | number = '0') {
+  if (!process.env.BASE_URL) throw new Error('Error: missing environment variable BASE_URL');
+  if (!process.env.TOKEN) throw new Error('Error: missing environment variable TOKEN');
   return `https://${process.env.BASE_URL}/api/student/${schoolId}/0/${fetchFor}/?token=${process.env.TOKEN}&clsId=${classId}`;
 }
 
@@ -31,12 +33,18 @@ export async function fetchDataSource<T extends {}>(
   schoolId: string | number,
   classId: string | number,
 ) {
+  const url = buildFetchUrl(fetchFor, schoolId, classId);
   try {
-    const url = buildFetchUrl(fetchFor, schoolId, classId);
     const res = await axios.get<T>(url);
     return res.data;
   } catch (err: unknown) {
-    if (typeof err === 'object' && err !== null && 'response' in err && 'status' in err['response'])
+    if (
+      typeof err === 'object' &&
+      err !== null &&
+      'response' in err &&
+      (err as { response: any }).response &&
+      'status' in err['response']
+    )
       throw new HTTPError(err['response'].status, 'Error fetching iscool servers');
     throw new Error('Unknown error');
   }
