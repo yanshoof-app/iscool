@@ -34,7 +34,7 @@ export class ISCOOL {
    * @param Room thr room specified by Iscool
    * @returns a string representing thr (actual) room / Zoom / Async description of the lesson's location
    */
-  static toClass(Te: string, Room: string): string {
+  static toClassroom(Te: string, Room: string): string {
     return Te == '' ? Room : Te == ONLINE ? ONLINE : Te == ONLINE_ASYNCRONOUS ? ONLINE_ASYNCRONOUS : CLASS_UNAVAILABLE;
   }
 
@@ -86,7 +86,7 @@ export class ISCOOL {
     return {
       subject: Subject,
       teacher: Teacher,
-      class: ISCOOL.toClass(Te, Room),
+      class: ISCOOL.toClassroom(Te, Room),
     };
   }
 
@@ -98,7 +98,7 @@ export class ISCOOL {
   static toTeacherLesson({ Subject, Te, Room }: ILessonIscool): ITeacherLesson {
     return {
       subject: Subject,
-      class: ISCOOL.toClass(Te, Room),
+      class: ISCOOL.toClassroom(Te, Room),
     };
   }
 
