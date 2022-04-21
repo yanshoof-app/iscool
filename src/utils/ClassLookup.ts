@@ -45,9 +45,7 @@ export class IscoolClassLookup implements IClassLookup {
   }
 
   get classIds(): number[][] {
-    const arr: number[][] = [];
-    for (let classIds of this.gradeMap.values()) arr.push(classIds);
-    return arr;
+    return [...this.gradeMap.values()];
   }
   get grades(): number[] {
     return [...this.gradeMap.keys()];
