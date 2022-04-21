@@ -6,8 +6,8 @@ export class HTTPError extends Error {
     return 'HTTP Error';
   }
 
-  static isHTTPError(err: Error): err is HTTPError {
-    return err.name === HTTPError.errorName && 'code' in err;
+  static isHTTPError(err: unknown): err is HTTPError {
+    return err instanceof Error && err.name === HTTPError.errorName && 'code' in err;
   }
 
   readonly code;
