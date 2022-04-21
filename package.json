@@ -1,6 +1,6 @@
 {
   "name": "@yanshoof/iscool",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Types and API Wrapper for the iscool API",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
