@@ -5,3 +5,4 @@ export { fetchDataSource } from './utils/datasource';
 export { fetchSchoolsWithQuery } from './utils/school-search';
 export { HTTPError } from './errors';
 export { ISCOOL } from './type-convert';
+export { IscoolClassLookup } from './utils/ClassLookup';
