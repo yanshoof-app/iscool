@@ -24,6 +24,11 @@ describe('converts types', () => {
     expect(ISCOOL.toClassroom(Te, room)).toBe(Te);
     expect(ISCOOL.toClassroom('', room)).toBe(room);
   });
+  it('Converts study groups', () => {
+    expect(ISCOOL.toStudyGroup(undefined)).toStrictEqual({});
+    expect(ISCOOL.toStudyGroup('')).toStrictEqual({});
+    expect(ISCOOL.toStudyGroup({ Subject: 'sub', Teacher: 'tea' })).toStrictEqual({ subject: 'sub', teacher: 'tea' });
+  });
   it('Converts changes to yanshoof modifications', () => {
     expect(ISCOOL.toModification(change).modification).toBe(LessonModification.Canceled);
     expect(ISCOOL.toModification(event).modification).toBe(LessonModification.Other);

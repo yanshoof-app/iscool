@@ -7,15 +7,16 @@ import {
   DayOfWeek,
   HourOfDay,
   ISchoolLookupResult,
+  IStudyGroup,
 } from '@yanshoof/types';
-import { IChangeIscool, ILessonIscool } from './interfaces/lesson';
+import { IChangeIscool, ILessonIscool, IStudyGroupIscool } from './interfaces/lesson';
 import { ISchoolSearchResultIscool } from './interfaces/school';
 import { CLASS_UNAVAILABLE, ONLINE, ONLINE_ASYNCRONOUS } from './strings';
 
 /**
  * A container class to convert Iscool types to our own
  * @authors Itay Schechner, Itay Oshri
- * @version 2022.0.0
+ * @version 1.2.1
  */
 export class ISCOOL {
   /**
@@ -42,6 +43,16 @@ export class ISCOOL {
       : Te === ONLINE_ASYNCRONOUS
       ? ONLINE_ASYNCRONOUS
       : CLASS_UNAVAILABLE;
+  }
+
+  /**
+   * Converts an iscool study group object to our own. Covers edge cases from the iscool API.
+   * @param ob the object to convery
+   * @returns its representation mapped to studyGroup
+   */
+  static toStudyGroup(ob: IStudyGroupIscool | undefined | string): IStudyGroup {
+    if (!ob || typeof ob !== 'object') return {} as IStudyGroup;
+    return { subject: ob.Subject, teacher: ob.Teacher };
   }
 
   /**
@@ -88,10 +99,9 @@ export class ISCOOL {
    * @param lesson the iscool lesson
    * @returns its representation in an ILesson format
    */
-  static toLesson({ Subject, Teacher, Te, Room }: ILessonIscool): ILesson {
+  static toLesson({ Te, Room, ...studyGroup }: ILessonIscool): ILesson {
     return {
-      subject: Subject,
-      teacher: Teacher,
+      ...ISCOOL.toStudyGroup(studyGroup),
       class: ISCOOL.toClassroom(Te, Room),
     };
   }
@@ -126,10 +136,8 @@ export class ISCOOL {
    * @returns its matching IChange representation
    */
   static toChange(change: IChangeIscool): IChange {
-    const { Subject, Teacher } = change.StudyGroup;
     return {
-      subject: Subject,
-      teacher: Teacher,
+      ...ISCOOL.toStudyGroup(change.StudyGroup),
       day: this.toDate(change.Date).getDay() as DayOfWeek,
       hour: change.Hour as HourOfDay,
       ...this.toModification(change),
