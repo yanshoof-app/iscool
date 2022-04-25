@@ -1,6 +1,6 @@
 import { DayOfWeek } from '@yanshoof/types';
 import { IrrelevantDateException } from '../errors/date';
-import { IChangeIscool } from '../interfaces/lesson';
+import { IChangeIscool, IWithDate } from '../interfaces/lesson';
 
 /**
  * Represents a date as given by Iscool
@@ -57,15 +57,15 @@ export class IscoolDate {
   }
 
   /**
-   * Filters changes by date
-   * @param changes the changes to filter
-   * @param lastUpdateTime the start of the date range
+   * Filters objects by date
+   * @param obs the objects to filter
+   * @param relevantFrom the start of the date range
    * @param relevantUntil the end of the date range
    * @returns an array of relevant changes
    */
-  static newChanges(changes: IChangeIscool[], lastUpdateTime: Date, relevantUntil: Date) {
-    return changes.filter(({ Date }) => {
-      const date = new IscoolDate(Date, lastUpdateTime, relevantUntil);
+  static relevantDatesOnly(obs: IWithDate[], relevantFrom: Date, relevantUntil: Date) {
+    return obs.filter(({ Date }) => {
+      const date = new IscoolDate(Date, relevantFrom, relevantUntil);
       return date.isRelevant;
     });
   }
