@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { HTTPError } from '../errors/http';
 
 export type FetchFor = 'schedule' | 'changes' | 'classes';
@@ -28,7 +28,7 @@ export function buildFetchUrl(fetchFor: FetchFor, schoolId: string | number, cla
  *  const { Classes } = fetchDataSource<IClassesResponse>('classes', school)
  * }
  */
-export async function fetchDataSource<T extends {}>(
+export async function fetchDataSource<T extends Record<string, unknown>>(
   fetchFor: FetchFor,
   schoolId: string | number,
   classId: string | number,
@@ -42,10 +42,10 @@ export async function fetchDataSource<T extends {}>(
       typeof err === 'object' &&
       err !== null &&
       'response' in err &&
-      (err as any).response &&
-      'status' in (err as any).response
+      (err as AxiosError).response &&
+      'status' in (err as AxiosError).response
     )
-      throw new HTTPError((err as any).response.status, 'Error fetching iscool servers');
+      throw new HTTPError((err as AxiosError).response.status, 'Error fetching iscool servers');
     throw new Error('Unknown error');
   }
 }

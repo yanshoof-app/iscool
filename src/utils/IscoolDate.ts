@@ -1,6 +1,6 @@
 import { DayOfWeek } from '@yanshoof/types';
 import { IrrelevantDateException } from '../errors/date';
-import { IChangeIscool, IWithDate } from '../interfaces/lesson';
+import { IWithDate } from '../interfaces/lesson';
 
 /**
  * Represents a date as given by Iscool

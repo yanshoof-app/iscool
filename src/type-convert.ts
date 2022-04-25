@@ -4,7 +4,6 @@ import {
   ILesson,
   ITeacherLesson,
   IChange,
-  DayOfWeek,
   HourOfDay,
   ISchoolLookupResult,
   IStudyGroup,
