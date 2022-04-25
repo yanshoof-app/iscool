@@ -6,7 +6,7 @@ import { ISchoolSearchRepsonse } from '../interfaces/school';
  * @param query the query to search
  * @returns an object returned by the iScool server
  * @example
- * const schoolLookup = SchoolLookup.buildFromQuery(460030); // results: [{ name: "עמי אסף בית ברל", symbol = 460030 }]
+ * const schools = await fetchSchoolsWithQuery("460030")  // results: [{ name: "עמי אסף בית ברל", symbol = 460030 }]
  */
 export async function fetchSchoolsWithQuery(query: string | number) {
   const url = `https://${process.env.BASE_URL}/api/school/search/?token=${process.env.TOKEN}&name=${encodeURIComponent(

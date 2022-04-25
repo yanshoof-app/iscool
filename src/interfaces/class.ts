@@ -13,8 +13,8 @@ export interface IClassIscool {
  * @param obj the object to check
  * @returns true if all fields of the IClassIscool interface are present in the object
  */
-export function isIscoolClass(obj: any): obj is IClassIscool {
-  return 'Id' in obj && 'Grade' in obj && 'Number' in obj;
+export function isIscoolClass(obj: unknown): obj is IClassIscool {
+  return typeof obj === 'object' && 'Id' in obj && 'Grade' in obj && 'Number' in obj;
 }
 
 /**

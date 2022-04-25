@@ -4,7 +4,6 @@ import {
   ILesson,
   ITeacherLesson,
   IChange,
-  DayOfWeek,
   HourOfDay,
   ISchoolLookupResult,
   IStudyGroup,
@@ -12,17 +11,18 @@ import {
 import { IChangeIscool, ILessonIscool, IStudyGroupIscool } from './interfaces/lesson';
 import { ISchoolSearchResultIscool } from './interfaces/school';
 import { CLASS_UNAVAILABLE, ONLINE, ONLINE_ASYNCRONOUS } from './strings';
+import { IscoolDate } from './utils/IscoolDate';
 
 /**
  * A container class to convert Iscool types to our own
  * @authors Itay Schechner, Itay Oshri
- * @version 1.2.1
+ * @version 1.3.0
  */
 export class ISCOOL {
   /**
    * Converts a date to its matching JavaScript Date object.
-   * @param date the date string, in the form of "Date(...)"
-   * @returns its matching date object
+   * Deprecated - use the IscoolDate class
+   * @deprecated
    */
   static toDate(date: string) {
     const milleseconds = date.match(/(\d+)/)[1];
@@ -138,7 +138,7 @@ export class ISCOOL {
   static toChange(change: IChangeIscool): IChange {
     return {
       ...ISCOOL.toStudyGroup(change.StudyGroup),
-      day: this.toDate(change.Date).getDay() as DayOfWeek,
+      day: new IscoolDate(change.Date).day,
       hour: change.Hour as HourOfDay,
       ...this.toModification(change),
     };
@@ -146,12 +146,12 @@ export class ISCOOL {
 
   /**
    * Converts an Iscool event object to ours
-   * @param change the change given by Iscool
-   * @returns its matching IChange representation
+   * Deprecated - toChange now supports studyGroupless changes
+   * @deprecated
    */
   static toEvent(event: IChangeIscool): IChange {
     return {
-      day: this.toDate(event.Date).getDay() as DayOfWeek,
+      day: new IscoolDate(event.Date).day,
       hour: event.Hour as HourOfDay,
       ...this.toModification(event),
     } as IChange;

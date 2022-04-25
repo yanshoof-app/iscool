@@ -7,6 +7,9 @@ export interface ISchoolSearchResultIscool {
   // code: number
 }
 
+/**
+ * Represents the school search result from iscool
+ */
 export interface ISchoolSearchRepsonse {
   Status: string;
   Schools: ISchoolSearchResultIscool[];

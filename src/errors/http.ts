@@ -1,5 +1,6 @@
 /**
  * Represents an error resulting from an HTTP request
+ * @version 1.0.0
  */
 export class HTTPError extends Error {
   static get errorName() {

@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { HTTPError } from '../errors';
+import axios, { AxiosError } from 'axios';
+import { HTTPError } from '../errors/http';
 
 export type FetchFor = 'schedule' | 'changes' | 'classes';
 
@@ -21,14 +21,14 @@ export function buildFetchUrl(fetchFor: FetchFor, schoolId: string | number, cla
  * @param fetchFor the purpose of the fetch: schedule, changes or classes
  * @param schoolId the id of the school whose the data is requested for
  * @param classId the id of the class whose data is requested for, defaults to 0
- * @returns the url made of those
+ * @returns the response given from those
  * @throws error if anything has failed during the request
  * @example
  * try {
  *  const { Classes } = fetchDataSource<IClassesResponse>('classes', school)
  * }
  */
-export async function fetchDataSource<T extends {}>(
+export async function fetchDataSource<T extends Record<string, unknown>>(
   fetchFor: FetchFor,
   schoolId: string | number,
   classId: string | number,
@@ -42,10 +42,10 @@ export async function fetchDataSource<T extends {}>(
       typeof err === 'object' &&
       err !== null &&
       'response' in err &&
-      (err as any).response &&
-      'status' in (err as any).response
+      (err as AxiosError).response &&
+      'status' in (err as AxiosError).response
     )
-      throw new HTTPError((err as any).response.status, 'Error fetching iscool servers');
+      throw new HTTPError((err as AxiosError).response.status, 'Error fetching iscool servers');
     throw new Error('Unknown error');
   }
 }
