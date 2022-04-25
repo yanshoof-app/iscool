@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { HTTPError } from '../errors';
+import { HTTPError } from '../errors/http';
 
 export type FetchFor = 'schedule' | 'changes' | 'classes';
 
