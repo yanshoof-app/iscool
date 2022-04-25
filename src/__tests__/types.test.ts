@@ -38,7 +38,7 @@ describe('converts types', () => {
     expect(ISCOOL.toChange(change).subject).toBe(change.StudyGroup.Subject);
   });
   it('Converts iscool changes to events', () => {
-    expect(ISCOOL.toEvent(event).day).toBe(new Date().getDay());
-    expect(ISCOOL.toEvent(event).subject).toBeUndefined();
+    expect(ISCOOL.toChange(event).day).toBe(new Date().getDay());
+    expect(ISCOOL.toChange(event).subject).toBeUndefined();
   });
 });
