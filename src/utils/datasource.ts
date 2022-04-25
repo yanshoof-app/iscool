@@ -21,7 +21,7 @@ export function buildFetchUrl(fetchFor: FetchFor, schoolId: string | number, cla
  * @param fetchFor the purpose of the fetch: schedule, changes or classes
  * @param schoolId the id of the school whose the data is requested for
  * @param classId the id of the class whose data is requested for, defaults to 0
- * @returns the url made of those
+ * @returns the response given from those
  * @throws error if anything has failed during the request
  * @example
  * try {
