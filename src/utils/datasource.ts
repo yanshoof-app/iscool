@@ -28,7 +28,7 @@ export function buildFetchUrl(fetchFor: FetchFor, schoolId: string | number, cla
  *  const { Classes } = fetchDataSource<IClassesResponse>('classes', school)
  * }
  */
-export async function fetchDataSource<T extends Record<string, unknown>>(
+export async function fetchDataSource<T extends object>(
   fetchFor: FetchFor,
   schoolId: string | number,
   classId: string | number,
