@@ -6,3 +6,4 @@ export { fetchSchoolsWithQuery } from './utils/school-search';
 export { ISCOOL } from './type-convert';
 export { IscoolClassLookup } from './utils/ClassLookup';
 export { HTTPError } from './errors/http';
+export { IscoolDate } from './utils/IscoolDate';

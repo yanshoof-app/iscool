@@ -9,21 +9,19 @@ import { IChangeIscool } from '../interfaces/lesson';
  */
 export class IscoolDate {
   private date: Date;
+  readonly isRelevant;
 
   /**
-   * Constructs a new iscool date
+   * Constructs a new iscool date within a range
    * @param iscoolDate the date string as sent by iscool
+   * @param relevantFrom the minimum date
+   * @param relevantUntil the maximum date
    */
-  constructor(iscoolDate: string) {
+  constructor(iscoolDate: string, relevantFrom?: Date, relevantUntil?: Date) {
     const milleseconds = iscoolDate.match(/(\d+)/)[1];
     this.date = new Date(Number(milleseconds));
-  }
-
-  /**
-   * Check if date is relevant
-   */
-  get isRelevant(): boolean {
-    return true; // TODO
+    if (relevantFrom && relevantUntil) this.isRelevant = this.isBefore(relevantUntil) && this.isAfter(relevantFrom);
+    else this.isRelevant = true;
   }
 
   /**
@@ -36,11 +34,18 @@ export class IscoolDate {
   }
 
   /**
+   * Calls for `date.getTime()` on the date
+   */
+  get time(): number {
+    return this.date.getTime();
+  }
+
+  /**
    * Check if before a given date
    * @return true if before, false otherwise
    */
   public isBefore(other: Date) {
-    return this.date < other;
+    return this.date <= other;
   }
 
   /**
@@ -48,7 +53,7 @@ export class IscoolDate {
    * @return true if before, false otherwise
    */
   public isAfter(other: Date) {
-    return this.date > other;
+    return this.date >= other;
   }
 
   /**
@@ -60,8 +65,8 @@ export class IscoolDate {
    */
   static newChanges(changes: IChangeIscool[], lastUpdateTime: Date, relevantUntil: Date) {
     return changes.filter(({ Date }) => {
-      const date = new IscoolDate(Date);
-      return date.isAfter(lastUpdateTime) && date.isBefore(relevantUntil);
+      const date = new IscoolDate(Date, lastUpdateTime, relevantUntil);
+      return date.isRelevant;
     });
   }
 }
