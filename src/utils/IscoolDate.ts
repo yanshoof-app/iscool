@@ -63,7 +63,7 @@ export class IscoolDate {
    * @param relevantUntil the end of the date range
    * @returns an array of relevant changes
    */
-  static relevantDatesOnly(obs: IWithDate[], relevantFrom: Date, relevantUntil: Date) {
+  static relevantDatesOnly<T extends IWithDate>(obs: T[], relevantFrom: Date, relevantUntil: Date) {
     return obs.filter(({ Date }) => {
       const date = new IscoolDate(Date, relevantFrom, relevantUntil);
       return date.isRelevant;
