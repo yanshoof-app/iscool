@@ -1,4 +1,4 @@
-import { Queue } from '../utils/queue/Queue';
+import { Queue } from '../utils/AsyncTaskQueue/queue/Queue';
 
 describe('Tests the queue class', () => {
   const queue = new Queue<number>();
