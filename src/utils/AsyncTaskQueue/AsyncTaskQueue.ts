@@ -23,7 +23,7 @@ export abstract class AsyncTaskQueue<TSuccess, TError> {
    * @param task the task to be enqueued
    * @throws if task should not be enqueued
    */
-  protected abstract onBeforeTaskEnqueue(task: AsyncTask<TSuccess, TError>): Promise<void>;
+  protected abstract onBeforeTaskEnqueue(task: AsyncTask<TSuccess, TError>): void;
 
   /**
    * Fire on task errors
@@ -59,5 +59,12 @@ export abstract class AsyncTaskQueue<TSuccess, TError> {
       await this.queue.dequeue().begin();
     }
     this.isExecuting = false;
+  }
+
+  /**
+   * Get the size of the queue
+   */
+  get size() {
+    return this.queue.size;
   }
 }

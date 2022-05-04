@@ -9,6 +9,8 @@
   ],
   "scripts": {
     "test": "jest --config jestconfig.json",
+    "test:changed": "jest --config jestconfig.json --onlyChanged",
+    "test:watch": "jest --config jestconfig.json --watch",
     "build": "tsc",
     "lint": "eslint . --ext .ts",
     "format": "eslint . --ext .ts --fix",
