@@ -1,3 +1,4 @@
+import { AsyncTask } from './AsyncTask';
 import { AsyncTaskQueue } from './AsyncTaskQueue';
 
 /**
@@ -23,10 +24,7 @@ export class AsyncTaskQueueTestImpl extends AsyncTaskQueue<number, Error> {
       this.begunCount,
     );
   }
-  protected onTaskError(err: Error): void {
-    console.log('Task failed. Error:', err.message);
-    this.errorCount++;
-  }
+
   protected async onBeforeTaskBegin(): Promise<void> {
     console.log(
       'Beginning task. Queue size: %d, Enqueued: %d, Begun: %d',
@@ -34,5 +32,14 @@ export class AsyncTaskQueueTestImpl extends AsyncTaskQueue<number, Error> {
       this.enqueuedCount,
       ++this.begunCount,
     );
+  }
+
+  protected onTaskError(_task: AsyncTask<number, Error>, err: Error): void {
+    console.log('Task failed. Error:', err.message);
+    this.errorCount++;
+  }
+
+  protected onTaskSuccess(_task: AsyncTask<number, Error>, res: number): void {
+    console.log('Task successful! Result:', res);
   }
 }

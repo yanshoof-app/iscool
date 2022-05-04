@@ -13,9 +13,6 @@ export class SleepTestTask extends AsyncTask<number, Error> {
   constructor(delay: number) {
     super();
     this.delay = delay;
-    this.on('success', (res) => {
-      console.log(res);
-    });
   }
 
   protected async sleep() {

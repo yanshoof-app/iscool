@@ -26,15 +26,23 @@ export abstract class AsyncTaskQueue<TSuccess, TError> {
   protected abstract onBeforeTaskEnqueue(task: AsyncTask<TSuccess, TError>): void;
 
   /**
-   * Fire on task errors
-   * @param err the error given from the task
-   */
-  protected abstract onTaskError(err: TError): void;
-
-  /**
    * Fire before task execution begins
    */
   protected abstract onBeforeTaskBegin(): Promise<void>;
+
+  /**
+   * Fires on task errors
+   * @param task the task failed
+   * @param err the error given from the task
+   */
+  protected abstract onTaskError(task: AsyncTask<TSuccess, TError>, err: TError): void;
+
+  /**
+   * Fire on task completion
+   * @param task the task succeeses
+   * @param res the result given from the task
+   */
+  protected abstract onTaskSuccess(task: AsyncTask<TSuccess, TError>, res: TSuccess): void;
 
   /**
    * Enqueue a new task.
@@ -44,7 +52,10 @@ export abstract class AsyncTaskQueue<TSuccess, TError> {
     this.onBeforeTaskEnqueue(task);
     this.queue.enqueue(task);
     task.on('error', (err) => {
-      this.onTaskError(err);
+      this.onTaskError(task, err);
+    });
+    task.on('success', (res) => {
+      this.onTaskSuccess(task, res);
     });
   }
 
