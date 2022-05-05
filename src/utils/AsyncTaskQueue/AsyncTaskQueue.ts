@@ -7,7 +7,7 @@ import { Queue } from './queue/Queue';
  * @version 1.4.0
  */
 export abstract class AsyncTaskQueue<TSuccess, TError> {
-  private queue: Queue<AsyncTask<TSuccess, TError>>;
+  protected queue: Queue<AsyncTask<TSuccess, TError>>;
   private isExecuting: boolean;
 
   /**

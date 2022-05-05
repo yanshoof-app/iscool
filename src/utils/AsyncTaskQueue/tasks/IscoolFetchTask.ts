@@ -10,7 +10,6 @@ import { AsyncTask } from '../AsyncTask';
  */
 export class IscoolFetchTask extends AsyncTask<IClassesResponse | IScheduleResponse | IChangesResponse, Error> {
   private params: Parameters<typeof fetchDataSource>;
-  private hasFetched: boolean;
 
   /**
    * Initializes a new IscoolFetchTask object.
@@ -19,12 +18,10 @@ export class IscoolFetchTask extends AsyncTask<IClassesResponse | IScheduleRespo
   constructor(...params: Parameters<typeof fetchDataSource>) {
     super();
     this.params = params;
-    this.hasFetched = true;
   }
 
   protected async beginTask(): Promise<IClassesResponse | IScheduleResponse | IChangesResponse> {
     const res = await fetchDataSource<IClassesResponse | IScheduleResponse | IChangesResponse>(...this.params);
-    this.hasFetched = true;
     return res;
   }
 }
