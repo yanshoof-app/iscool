@@ -5,7 +5,7 @@ import { fetchDataSource } from './datasource';
 /**
  * Represents a class lookup object created from iscool
  * @author Itay Schechner
- * @version 1.2.0
+ * @version 1.4.0
  * @implements IClassLookup
  */
 export class IscoolClassLookup implements IClassLookup {
@@ -57,5 +57,14 @@ export class IscoolClassLookup implements IClassLookup {
    */
   get gradeSize(): number {
     return this.gradeMap.size;
+  }
+
+  /** Execute a callback for each class */
+  public forEachClass(cb: (id: number) => void) {
+    for (const grade of this.gradeMap.values()) {
+      for (const classId of grade) {
+        if (classId !== IscoolClassLookup.CLASS_NOT_FOUND) cb(classId);
+      }
+    }
   }
 }
