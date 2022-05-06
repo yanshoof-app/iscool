@@ -8,7 +8,10 @@ import { AsyncTask } from '../AsyncTask';
  * @author Itay Schechner
  * @version 1.4.0
  */
-export class IscoolFetchTask extends AsyncTask<IClassesResponse | IScheduleResponse | IChangesResponse, Error> {
+export class IscoolFetchTask<T extends IClassesResponse | IScheduleResponse | IChangesResponse> extends AsyncTask<
+  T,
+  Error
+> {
   private params: Parameters<typeof fetchDataSource>;
 
   /**
@@ -20,8 +23,20 @@ export class IscoolFetchTask extends AsyncTask<IClassesResponse | IScheduleRespo
     this.params = params;
   }
 
-  protected async beginTask(): Promise<IClassesResponse | IScheduleResponse | IChangesResponse> {
-    const res = await fetchDataSource<IClassesResponse | IScheduleResponse | IChangesResponse>(...this.params);
+  protected async beginTask(): Promise<T> {
+    const res = await fetchDataSource<T>(...this.params);
     return res;
+  }
+
+  get fetchFor() {
+    return this.params[0];
+  }
+
+  get school() {
+    return this.params[1];
+  }
+
+  get classId() {
+    return this.params[2];
   }
 }
