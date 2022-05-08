@@ -7,7 +7,7 @@ export class TaskShouldNotExecuteError extends Error {
   }
 
   static isTaskShouldNotExecuteError(err: unknown): err is TaskShouldNotExecuteError {
-    return err instanceof TaskShouldNotExecuteError;
+    return err instanceof Error && err.name === TaskShouldNotExecuteError.errorName;
   }
 
   constructor(message?: string) {
