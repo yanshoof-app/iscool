@@ -1,4 +1,5 @@
 import { ListenerSignature, TypedEmitter } from 'tiny-typed-emitter';
+import { TaskShouldNotExecuteError } from '../../errors/taskShouldNotExecute';
 import { AsyncTask } from './AsyncTask';
 import { Queue } from './queue/Queue';
 /**
@@ -10,8 +11,9 @@ export abstract class AsyncTaskQueue<
   TSuccess,
   TError,
   TEvents extends ListenerSignature<TEvents> = object,
+  TTask extends AsyncTask<TSuccess, TError> = AsyncTask<TSuccess, TError>,
 > extends TypedEmitter<TEvents> {
-  protected queue: Queue<AsyncTask<TSuccess, TError>>;
+  protected queue: Queue<TTask>;
   private isExecuting: boolean;
 
   /**
@@ -28,32 +30,34 @@ export abstract class AsyncTaskQueue<
    * @param task the task to be enqueued
    * @throws if task should not be enqueued
    */
-  protected abstract onBeforeTaskEnqueue(task: AsyncTask<TSuccess, TError>): void;
+  protected abstract onBeforeTaskEnqueue(task: TTask): void;
 
   /**
    * Fire before task execution begins
+   * @param task the task to be executed
+   * @throws {TaskShouldNotExecuteError} if should not execute
    */
-  protected abstract onBeforeTaskBegin(): Promise<void>;
+  protected abstract onBeforeTaskBegin(task: TTask): Promise<void>;
 
   /**
    * Fires on task errors
    * @param task the task failed
    * @param err the error given from the task
    */
-  protected abstract onTaskError(task: AsyncTask<TSuccess, TError>, err: TError): void;
+  protected abstract onTaskError(task: TTask, err: TError): void;
 
   /**
    * Fire on task completion
    * @param task the task succeeses
    * @param res the result given from the task
    */
-  protected abstract onTaskSuccess(task: AsyncTask<TSuccess, TError>, res: TSuccess): void;
+  protected abstract onTaskSuccess(task: TTask, res: TSuccess): void;
 
   /**
    * Enqueue a new task.
    * @param task the task to enqueue
    */
-  public enqueue(task: AsyncTask<TSuccess, TError>) {
+  public enqueue(task: TTask) {
     this.onBeforeTaskEnqueue(task);
     this.queue.enqueue(task);
     task.on('error', (err) => {
@@ -71,8 +75,14 @@ export abstract class AsyncTaskQueue<
     if (this.isExecuting) return;
     this.isExecuting = true;
     while (!this.queue.isEmpty()) {
-      await this.onBeforeTaskBegin();
-      await this.queue.dequeue().begin();
+      try {
+        const nextTask = this.queue.dequeue();
+        await this.onBeforeTaskBegin(nextTask);
+        await nextTask.begin();
+      } catch (err) {
+        if (TaskShouldNotExecuteError.isTaskShouldNotExecuteError(err)) continue;
+        throw err;
+      }
     }
     this.isExecuting = false;
   }
