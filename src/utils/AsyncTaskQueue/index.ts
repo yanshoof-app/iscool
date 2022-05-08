@@ -2,8 +2,8 @@ import { HTTPError } from '../../errors/http';
 import { IscoolServerException } from '../../errors/iscoolServer';
 import { IClassesResponse } from '../../interfaces/class';
 import { IChangesResponse, IScheduleResponse } from '../../interfaces/lesson';
-import { AsyncTask } from './tasks/AsyncTask';
-import { AsyncTaskQueue } from './AsyncTaskQueue';
+import { AbortableTaskQueue } from './AbortableTaskQueue';
+import { IscoolFetchTask } from './tasks/IscoolFetchTask';
 
 interface IEvents {
   sleep: (time: number) => void;
@@ -14,10 +14,11 @@ interface IEvents {
  * @author Itay Schechner
  * @version 1.4.0
  */
-export class IscoolRequestQueue extends AsyncTaskQueue<
+export class IscoolRequestQueue extends AbortableTaskQueue<
   IClassesResponse | IScheduleResponse | IChangesResponse,
   Error,
-  IEvents
+  IEvents,
+  IscoolFetchTask<IClassesResponse | IScheduleResponse | IChangesResponse>
 > {
   public static MAX_DELAY_TRESHOLD = 60_000; // 60 seconds of waiting
   public static DELAY_INTERVAL = 100; // 100ms of waiting
@@ -57,7 +58,7 @@ export class IscoolRequestQueue extends AsyncTaskQueue<
       throw new IscoolServerException('Iscool servers too busy');
   }
 
-  protected async onBeforeTaskBegin(): Promise<void> {
+  protected async onBeforeUnabortedTaskBegin(): Promise<void> {
     if (this.delay) {
       this.emit('sleep', this.delay);
       await this.sleep();
@@ -65,7 +66,7 @@ export class IscoolRequestQueue extends AsyncTaskQueue<
   }
 
   protected onTaskError(
-    task: AsyncTask<IClassesResponse | IScheduleResponse | IChangesResponse, Error>,
+    task: IscoolFetchTask<IClassesResponse | IScheduleResponse | IChangesResponse>,
     err: Error,
   ): void {
     this.countSuccessful = 0;

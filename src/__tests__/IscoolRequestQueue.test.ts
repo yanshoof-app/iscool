@@ -29,6 +29,13 @@ classes_task.on('success', ({ Classes }) => {
 });
 queue.enqueue(classes_task);
 
+const abortedTask = new IscoolFetchTask<IClassesResponse>('classes', AMI_ASSAF, 0);
+abortedTask.on('success', () => {
+  throw new Error('Task aborted');
+});
+queue.enqueue(abortedTask);
+abortedTask.abort();
+
 describe('Tests the IscoolRequestQueue with schedule of each class', () => {
   jest.setTimeout(40_000);
 

@@ -12,7 +12,8 @@ export abstract class AbortableTaskQueue<
   TSuccess,
   TError,
   TEvents extends ListenerSignature<TEvents> = object,
-> extends AsyncTaskQueue<TSuccess, TError, TEvents, AbortableTask<TSuccess, TError>> {
+  TTask extends AbortableTask<TSuccess, TError> = AbortableTask<TSuccess, TError>,
+> extends AsyncTaskQueue<TSuccess, TError, TEvents, TTask> {
   /** Fires before task begins, if not aborted */
   protected abstract onBeforeUnabortedTaskBegin(): Promise<void>;
 

@@ -1,14 +1,14 @@
 import { IClassesResponse } from '../../../interfaces/class';
 import { IChangesResponse, IScheduleResponse } from '../../../interfaces/lesson';
 import { fetchDataSource } from '../../datasource';
-import { AsyncTask } from './AsyncTask';
+import { AbortableTask } from './AbortableTask';
 
 /**
  * Represents an asyncronous task of fetching the iscool servers
  * @author Itay Schechner
  * @version 1.4.0
  */
-export class IscoolFetchTask<T extends IClassesResponse | IScheduleResponse | IChangesResponse> extends AsyncTask<
+export class IscoolFetchTask<T extends IClassesResponse | IScheduleResponse | IChangesResponse> extends AbortableTask<
   T,
   Error
 > {
@@ -23,7 +23,7 @@ export class IscoolFetchTask<T extends IClassesResponse | IScheduleResponse | IC
     this.params = params;
   }
 
-  protected async beginTask(): Promise<T> {
+  protected async beginTaskWhenNotAborted(): Promise<T> {
     const res = await fetchDataSource<T>(...this.params);
     return res;
   }
