@@ -50,6 +50,7 @@ export class IscoolRequestQueue extends AsyncTaskQueue<IClassesResponse | ISched
   }
 
   protected async onBeforeTaskBegin(): Promise<void> {
+    console.log('Sleeping %d milliseconds', this.delay);
     if (this.delay) await this.sleep();
   }
 
@@ -70,6 +71,9 @@ export class IscoolRequestQueue extends AsyncTaskQueue<IClassesResponse | ISched
   protected onTaskSuccess(): void {
     this.countSuccessful++;
     this.countBlocked = 0;
-    this.delay -= (this.countSuccessful / IscoolRequestQueue.SUCCESS_INTERVAL) * IscoolRequestQueue.DELAY_INTERVAL;
+    const delayToSubtract =
+      (this.countSuccessful / IscoolRequestQueue.SUCCESS_INTERVAL) * IscoolRequestQueue.DELAY_INTERVAL;
+    if (delayToSubtract <= this.delay) this.delay -= delayToSubtract;
+    else this.delay = 0;
   }
 }

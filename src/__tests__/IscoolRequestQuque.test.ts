@@ -26,7 +26,7 @@ classes_task.on('success', ({ Classes }) => {
 queue.enqueue(classes_task);
 
 describe('Tests the IscoolRequestQueue with schedule of each class', () => {
-  jest.setTimeout(100_000);
+  jest.setTimeout(40_000);
 
   it('Executes the queue', async () => {
     await queue.execute();
