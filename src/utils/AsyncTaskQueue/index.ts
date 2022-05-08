@@ -5,12 +5,20 @@ import { IChangesResponse, IScheduleResponse } from '../../interfaces/lesson';
 import { AsyncTask } from './AsyncTask';
 import { AsyncTaskQueue } from './AsyncTaskQueue';
 
+interface IEvents {
+  sleep: (time: number) => void;
+}
+
 /**
  * An implementation of a queue of Iscool Requests
  * @author Itay Schechner
  * @version 1.4.0
  */
-export class IscoolRequestQueue extends AsyncTaskQueue<IClassesResponse | IScheduleResponse | IChangesResponse, Error> {
+export class IscoolRequestQueue extends AsyncTaskQueue<
+  IClassesResponse | IScheduleResponse | IChangesResponse,
+  Error,
+  IEvents
+> {
   public static MAX_DELAY_TRESHOLD = 30_000; // 30 seconds of waiting
   public static DELAY_INTERVAL = 100; // 100ms of waiting
   public static SUCCESS_INTERVAL = 2; // 2 tasks to take down delay
@@ -50,8 +58,10 @@ export class IscoolRequestQueue extends AsyncTaskQueue<IClassesResponse | ISched
   }
 
   protected async onBeforeTaskBegin(): Promise<void> {
-    console.log('Sleeping %d milliseconds', this.delay);
-    if (this.delay) await this.sleep();
+    if (this.delay) {
+      this.emit('sleep', this.delay);
+      await this.sleep();
+    }
   }
 
   protected onTaskError(

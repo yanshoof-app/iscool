@@ -11,6 +11,10 @@ const classes_task = new IscoolFetchTask<IClassesResponse>('classes', AMI_ASSAF,
 let numOfClasses = 0;
 let classesWithSchedule = 0;
 
+queue.on('sleep', (time) => {
+  console.log('Expected delay: %dms', time * queue.size);
+});
+
 classes_task.on('success', ({ Classes }) => {
   const classLookup = new IscoolClassLookup(Classes);
   classLookup.forEachClass((id) => {
