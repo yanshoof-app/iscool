@@ -1,12 +1,16 @@
+import { ListenerSignature, TypedEmitter } from 'tiny-typed-emitter';
 import { AsyncTask } from './AsyncTask';
 import { Queue } from './queue/Queue';
-
 /**
  * An abstraction of a queue of requests
  * @author Itay Schechner
  * @version 1.4.0
  */
-export abstract class AsyncTaskQueue<TSuccess, TError> {
+export abstract class AsyncTaskQueue<
+  TSuccess,
+  TError,
+  TEvents extends ListenerSignature<TEvents> = object,
+> extends TypedEmitter<TEvents> {
   protected queue: Queue<AsyncTask<TSuccess, TError>>;
   private isExecuting: boolean;
 
@@ -14,6 +18,7 @@ export abstract class AsyncTaskQueue<TSuccess, TError> {
    * Construct a new queue
    */
   constructor() {
+    super();
     this.queue = new Queue();
     this.isExecuting = false;
   }
