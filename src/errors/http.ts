@@ -1,8 +1,9 @@
 /**
  * Represents an error resulting from an HTTP request
- * @version 1.0.0
+ * @version 1.4.0
  */
 export class HTTPError extends Error {
+  static TOO_MANY_REQUESTS = 429;
   static get errorName() {
     return 'HTTP Error';
   }

@@ -6,4 +6,7 @@ export { fetchSchoolsWithQuery } from './utils/school-search';
 export { ISCOOL } from './type-convert';
 export { IscoolClassLookup } from './utils/ClassLookup';
 export { HTTPError } from './errors/http';
+export { IscoolServerException } from './errors/iscoolServer';
 export { IscoolDate } from './utils/IscoolDate';
+export { IscoolRequestQueue } from './utils/AsyncTaskQueue';
+export { IscoolFetchTask } from './utils/AsyncTaskQueue/tasks/IscoolFetchTask';

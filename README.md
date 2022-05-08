@@ -44,6 +44,12 @@ Query classes with the static method of the library utility:
 const { grades, classes } = await IscoolClassLookup.fromSchool(school);
 ```
 
+You can execute a callback for each class with the method
+
+```ts
+classLookup.forEachClass((id) => {...});
+```
+
 **Querying Lessons and Changes**
 
 Query lessons and changes with the standard `fetchDataSource` method:
@@ -64,6 +70,47 @@ Filter changes by relevancy by calling:
 
 ```ts
 const relevantChanges = IscoolDate.relevantDatesOnly(changes, relevantFrom, relevantUntil);
+```
+
+**Queueing Requests** _New!!_
+
+You can now use the brand new `IscoolRequestQueue` and `IscoolFetchTask` classes to enqueue requests and fetch them seamlessly, regardless of delays and blocks from the iscool server.
+
+Create a request and subscribe to events just as you would invoke a normal `fetchDataSource` call:
+
+```ts
+const scheduleReq = new IscoolFetchTask<IScheduleResponse>('schedule', school, classId);
+
+scheduleReq.on('success', ({ Schedule }) => {
+  // do something
+});
+
+scheduleReq.on('error', (err) => {
+  // do something
+});
+```
+
+Create a queue:
+
+```ts
+const queue = new IscoolRequestQueue();
+
+// fires when iscool servers delay the request
+queue.on('sleep', (time) => {
+  console.log('Expected delay: %dms', time * queue.size);
+});
+```
+
+Enqueue a task with the commands:
+
+```ts
+queue.enqueue(scheduleReq);
+```
+
+Execute all tasks (if not executing on another thread):
+
+```ts
+await queue.execute();
 ```
 
 ## Library
@@ -181,3 +228,39 @@ You can also query directly from a school using the command:
 ```ts
 const { classes, grades } = await IscoolClassLookup.fromSchool(school);
 ```
+
+### The Request Queue Library _New!!_
+
+The request queue library helps query multiple requests at once without worrying about the iscool servers blocking us.
+
+Create a new queue with the command:
+
+```ts
+const queue = new IscoolRequestQueue();
+```
+
+Available methods:
+
+- `enqueue(IscoolFetchTask)` enqueues the task. Can throw an `IscoolServerError` if servers are too busy
+- `async execute()` executes all requests in the queue, if not executing on another thread.
+
+Available events:
+
+- `sleep` executes before sleeping with the `time: number` params
+
+Create a new fetch task with the command:
+
+```ts
+const req = new IscoolFetchTask(...args: Parameters<typeof buildFetchUrl>)
+```
+
+Available methods:
+
+- `abort()` makes sure the task will not execute when its time comes
+- `get isAborted()` returns whether or not the task is aborted
+- `get isSuccessful()` returns whether or not the task has been completed
+
+Available events:
+
+- The `'error'` event fires on unexpected (non-delay) error with the error object
+- The `'success'` event fires on task completion with the `res` return type specified
