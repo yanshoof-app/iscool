@@ -66,7 +66,7 @@ export abstract class AsyncTaskQueue<TSuccess, TError> {
     if (this.isExecuting) return;
     this.isExecuting = true;
     while (!this.queue.isEmpty()) {
-      this.onBeforeTaskBegin();
+      await this.onBeforeTaskBegin();
       await this.queue.dequeue().begin();
     }
     this.isExecuting = false;
