@@ -19,7 +19,7 @@ export class IscoolRequestQueue extends AsyncTaskQueue<
   Error,
   IEvents
 > {
-  public static MAX_DELAY_TRESHOLD = 30_000; // 30 seconds of waiting
+  public static MAX_DELAY_TRESHOLD = 60_000; // 60 seconds of waiting
   public static DELAY_INTERVAL = 100; // 100ms of waiting
   public static SUCCESS_INTERVAL = 2; // 2 tasks to take down delay
 
