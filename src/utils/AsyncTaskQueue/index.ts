@@ -2,7 +2,7 @@ import { HTTPError } from '../../errors/http';
 import { IscoolServerException } from '../../errors/iscoolServer';
 import { IClassesResponse } from '../../interfaces/class';
 import { IChangesResponse, IScheduleResponse } from '../../interfaces/lesson';
-import { AsyncTask } from './AsyncTask';
+import { AsyncTask } from './tasks/AsyncTask';
 import { AsyncTaskQueue } from './AsyncTaskQueue';
 
 interface IEvents {

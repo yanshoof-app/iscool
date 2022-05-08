@@ -1,5 +1,5 @@
-import { AsyncTask } from './AsyncTask';
-import { AsyncTaskQueue } from './AsyncTaskQueue';
+import { AsyncTask } from '../tasks/AsyncTask';
+import { AsyncTaskQueue } from '../AsyncTaskQueue';
 
 /**
  * A test implementation of the async task queue

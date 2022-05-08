@@ -1,7 +1,7 @@
 import { IClassesResponse } from '../../../interfaces/class';
 import { IChangesResponse, IScheduleResponse } from '../../../interfaces/lesson';
 import { fetchDataSource } from '../../datasource';
-import { AsyncTask } from '../AsyncTask';
+import { AsyncTask } from './AsyncTask';
 
 /**
  * Represents an asyncronous task of fetching the iscool servers

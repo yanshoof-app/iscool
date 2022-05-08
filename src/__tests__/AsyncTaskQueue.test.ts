@@ -1,6 +1,6 @@
-import { AsyncTaskQueueTestImpl } from '../utils/AsyncTaskQueue/AsyncTaskQueueTestImpl';
-import { SleepTestTask } from '../utils/AsyncTaskQueue/tasks/SleepTestTask';
-import { FailTestTask } from '../utils/AsyncTaskQueue/tasks/FailTestTask';
+import { AsyncTaskQueueTestImpl } from '../utils/AsyncTaskQueue/test_utils/AsyncTaskQueueTestImpl';
+import { SleepTestTask } from '../utils/AsyncTaskQueue/test_utils/SleepTestTask';
+import { FailTestTask } from '../utils/AsyncTaskQueue/test_utils/FailTestTask';
 
 describe('Tests the async task queue method', () => {
   jest.setTimeout(100_000);

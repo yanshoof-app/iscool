@@ -1,6 +1,6 @@
 import { ListenerSignature, TypedEmitter } from 'tiny-typed-emitter';
 import { TaskShouldNotExecuteError } from '../../errors/taskShouldNotExecute';
-import { AsyncTask } from './AsyncTask';
+import { AsyncTask } from './tasks/AsyncTask';
 import { Queue } from './queue/Queue';
 /**
  * An abstraction of a queue of requests

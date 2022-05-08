@@ -1,4 +1,4 @@
-import { AsyncTask } from '../AsyncTask';
+import { AsyncTask } from '../tasks/AsyncTask';
 
 /**
  * Represents a sleep async task
