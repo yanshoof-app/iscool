@@ -56,9 +56,10 @@ export abstract class AsyncTaskQueue<
   /**
    * Enqueue a new task.
    * @param task the task to enqueue
+   * @throws if can't enqueue task
    */
   public enqueue(task: TTask) {
-    this.onBeforeTaskEnqueue(task);
+    this.onBeforeTaskEnqueue(task); // might throw error
     this.queue.enqueue(task);
     task.on('error', (err) => {
       this.onTaskError(task, err);
