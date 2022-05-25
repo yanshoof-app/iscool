@@ -86,5 +86,8 @@ export class IscoolRequestQueue extends AbortableTaskQueue<
       (this.countSuccessful / IscoolRequestQueue.SUCCESS_INTERVAL) * IscoolRequestQueue.DELAY_INTERVAL;
     if (delayToSubtract <= this.delay) this.delay -= delayToSubtract;
     else this.delay = 0;
+
+    // reset delay when queue is empty
+    if (!this.size) this.delay = 0;
   }
 }
